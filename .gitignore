@@ -44,3 +44,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Files
+
+EDA\titles.csv
