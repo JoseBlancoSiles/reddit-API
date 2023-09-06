@@ -1,0 +1,44 @@
+name: run extract_reddit_posts.py
+on:
+  schedule:
+    - cron: '0 0,2,8,14,20,21 * * *' 
+       
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v2 # Checkout the latest version of your repo and push it to git runner. 
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.7'
+      
+      - name: Set up environment variables to load the reddit API credentials 
+        run: |
+          echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "REDDIT_SECRET_KEY=${{ secrets.REDDIT_SECRET_KEY }}" >> $GITHUB_ENV
+
+      - name: Connect to the IAM role in AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-session-name: awssyncsession
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE}}
+          aws-region: ${{ secrets.AWS_REGION}}
+      
+      - name: install python packages 
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: execute python script
+        run: python extract_reddit_posts.py
+
+      - name: upload time of the last message collected # Upload the txt file containing the epoch time of the newest message of the last batch.
+        run: |
+          aws s3 cp last_time_message.txt s3://reddit-project-jose/last_time_message.txt
