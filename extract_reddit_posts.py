@@ -15,7 +15,7 @@ def get_last_message_time_from_s3():
   '''Load the time of the last message of the last batch ingestion'''
   try:
     s3 = boto3.client("s3")
-    bucket_name = "reddit-project-jose"
+    bucket_name = "reddit-project-jose1"
     key = "last_time_message.txt"
       
     response = s3.get_object(Bucket=bucket_name, Key=key)
@@ -69,7 +69,7 @@ def put_posts_s3(formatted_posts):
   '''Connect to S3 bucket and upload the posts'''
   try:
     s3 = boto3.client("s3")
-    bucket_name = "reddit-project-jose"
+    bucket_name = "reddit-project-jose1"
     s3.put_object(Bucket=bucket_name, Key="reddit-posts.json", Body=formatted_posts)
     
   except Exception as e:
