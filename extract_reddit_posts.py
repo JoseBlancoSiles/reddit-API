@@ -85,5 +85,6 @@ def main():
   last_message_txt = last_message_time(current_last_new_message_time)
   put_posts_s3(posts)
 
+
 if __name__ == "__main__":
   main()
