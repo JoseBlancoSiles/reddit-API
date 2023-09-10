@@ -41,4 +41,4 @@ jobs:
 
       - name: upload time of the last message collected # Upload the txt file containing the epoch time of the newest message of the last batch.
         run: |
-          aws s3 cp last_time_message.txt s3://reddit-project-jose/last_time_message.txt
+          aws s3 cp last_time_message.txt s3://reddit-project-jose1/last_time_message.txt
