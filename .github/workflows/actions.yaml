@@ -1,11 +1,7 @@
 name: run extract_reddit_posts.py
 on:
   schedule:
-    - cron: '0 0,2,8,14,20,21 * * *' 
-    
-  push:
-    branches:
-      - main  # Replace 'main' with the name of your default branch if needed
+    - cron: '0 0,1,2,3,10,16,20 * * *' 
        
 permissions:
   id-token: write
