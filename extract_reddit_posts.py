@@ -27,7 +27,7 @@ def get_last_message_time_from_s3():
   
   except Exception as e:
       print("Error retrieving last message time from S3:", e)
-      return None
+      return 0.0 # The first time ever we consume the API, there is no such file, so return 0! --> epoch datetime
     
 def extract_format_posts(reddit_instance, last_message_previous_batch_time):
   '''Extract the posts based son subreddit, limit and fields. Extract the time of the newest post --> last that will be consumed'''
