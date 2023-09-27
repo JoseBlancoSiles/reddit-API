@@ -1,5 +1,7 @@
+# Response of the Reddit API --> JSON file format
 The purpose of this section is to know further the response of the reddit API. The posts come as a JSON array. Each message within the list, which has an aproximate length of 1000, has the following structure:
 
+```json
 {
     "comment_limit": 2048,
     "comment_sort": "confidence",
@@ -110,6 +112,7 @@ The purpose of this section is to know further the response of the reddit API. T
     "_comments_by_id": {}
 }
 
+```
 In this section, a little study will be carried out to determine which columns are more relevant to our study case. Although this will not be in production and the real transformations will be carried out in Spark, knowing how your raw data looks like is a crucial step in any data project.
 
 Besides, this EDA will help de data modelling, it will be easy to answer the 7 W'S of the Data Warehouse Design:
