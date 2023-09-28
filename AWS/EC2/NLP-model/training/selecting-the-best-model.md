@@ -1,28 +1,34 @@
-
 # Natural Laguage Processing (NLP) in Reddit Post Classification
-![Alt text](../images/nlp.png)
  To achieve accurate and efficient Reddit post classification, Natural Language Processing (NLP) techniques are indispensable. NLP enables machines to understand and process human language, making it possible to analyze and categorize posts based on their textual content. NLP techniques such as tokenization, word embeddings, and text vectorization play a pivotal role in converting raw text data into a format suitable for machine learning models.
 
 Now that we grabbed the idea of how the computer understand human words, let's dive into the selection of the model that best suits our needs.
 
-## Machine Learning
-On of the most important fields in machine learning is the field of prediction. So, based on an input, the computer is able to predict the output based on patterns and data which it has been trained.
-In our case, we are trying to predict what category has a question recently placed by a user in the subreddit [r/AskReddit](https://www.reddit.com/r/AskReddit/new/). 
+## Machine Learning Challenges
 
-3 main challenges:
-1. **Multiclass**: The category of a post, is not binary classification, as users post multiple different kind of questions.
-2. **No labeled data**: Although the redditAPI provides a complete response about each post in Reddit
-3. **Large number of categories**: As you can imagine, the classification of the Reddit questions, can be so diverse. However, for this case of study, we are keeping only the 14 most relative ones, that represent like 50% of the total.
+In the field of machine learning, one of the most significant endeavors is prediction. This involves leveraging patterns and training data to enable a computer to forecast outcomes based on given inputs. In our specific case, we aim to predict the category of a question recently posted by a user in the subreddit [r/AskReddit](https://www.reddit.com/r/AskReddit/new/).
 
-### Multiclass classification models
-Therefore, we need to use a model which allows multiclass classification. Apache Spark ecosystem includes [sparkML](https://spark.apache.org/docs/2.2.0/ml-classification-regression.html) which has very powerful models to achieve our objetive. 5 of this models have been trained and tested [here](../model-training/sparkML-multiclass-classification-models/). Feel free to reach out to that folder and check the results for each model. In my case, I've chosen the [Multinomial Logistic Regression](https://spark.apache.org/docs/2.2.0/ml-classification-regression.html#multinomial-logistic-regression) as the accuracy and precision was really good and the implementation is easier. You can try other models for your use case.
+### Key Challenges
 
-### Absence of labeled data
-In order to train and test our Machine Learning model, we need a labeled dataset, which contains, for each post, the category of it. Unfortunately, there is no label for the category in the [redditAPI](https://www.reddit.com/dev/api/) response, so we had to manually label our [labeled training dataset](../model-training/labeled-dataset/labeled-training-dataset.csv). 
+1. **Multiclass Classification**: Unlike binary classification, where an item is categorized into one of two classes, our task involves multiclass classification. Users on Reddit post a wide variety of questions spanning numerous categories.
 
-### Large number of categories
+2. **Lack of Labeled Data**: Despite the wealth of information available via the Reddit API, obtaining labeled data for training is challenging. Labeling each post manually is impractical due to the vast volume of content. This requires innovative approaches, such as utilizing clustering algorithms and human expertise, to assign labels to posts effectively.
 
-The categories of Redditor's questions, can be as big as the imagination of them. Howerver, using 14 categories more than 50% of the questions can be categorized. Refer to [Labeling raw dataset](../model-training/labeled-dataset/steps.md) to obtain more information about the specified categories.
+3. **Diverse Categories**: Reddit is known for its diversity in question topics. However, for this specific study, we've focused on a subset of the most relevant categories, approximately 14, which collectively account for a significant portion of the content (around 50%).
+
+By addressing these challenges, we aim to build an effective machine learning model capable of accurately categorizing a broad spectrum of Reddit questions.
+
+### Multiclass Classification Models
+
+For multiclass classification, the Apache Spark ecosystem offers a powerful solution through [sparkML](https://spark.apache.org/docs/2.2.0/ml-classification-regression.html). In my case, I opted for [Multinomial Logistic Regression](https://spark.apache.org/docs/2.2.0/ml-classification-regression.html#multinomial-logistic-regression) due to its excellent accuracy and precision, as well as its ease of implementation. However, you can experiment with other models to suit your specific use case.
+
+### Absence of Labeled Data
+
+To train and test our machine learning model, we required a labeled dataset that associates each Reddit post with its corresponding category. Unfortunately, the [redditAPI](https://www.reddit.com/dev/api/) response does not include category labels. Consequently, we manually labeled our [labeled training dataset](/AWS/EC2/NLP-model/training/labeled-training-dataset.csv).
+
+### Handling a Large Number of Categories
+
+The range of categories in Redditors' questions is virtually boundless, limited only by their imagination. However, for our study, we focused on 14 categories, which collectively account for more than 50% of the questions. For detailed information about these categories, refer to the [Labeling raw dataset](./steps.md) section.
+
 
  ## Why SparkML
  
@@ -49,7 +55,3 @@ The categories of Redditor's questions, can be as big as the imagination of them
 4. **Multiclass Classification Support:** Logistic Regression can be adapted for multiclass classification tasks. In the context of Reddit post classification, where posts can belong to multiple categories or subreddits, this makes Logistic Regression a practical choice.
 
 5. **Regularization:** Logistic Regression also offers regularization techniques like L1 and L2 regularization, which help prevent overfitting and improve the model's generalization capabilities. This is important when dealing with noisy and diverse text data, as seen in Reddit post titles.
-
-Refer to [Trained Models](../model-training/sparkML-multiclass-classification-models) to see the performance of other tested models such us Random Forest, Naive Bayes and more.
-
-
