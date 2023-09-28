@@ -1,3 +1,5 @@
+# Python script to get the batch of 1000 posts from the subreddit
+
 import praw, os, json, boto3
 
 # Functions
