@@ -12,15 +12,12 @@ The purpose of this automated ML pipeline is to classify into buckets  the quest
 
 ### Workflow
 
-1. GitHub connects with [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) that has trust of it thanks to [OIDC](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) and dynamically generates AWS credentials. Job is executed every 8 hours as automated in [GitHub actions](https://github.com/features/actions)
-2. Python script consumes reddit API and get the latest 1000 messages in [AskReddit](https://www.reddit.com/r/AskReddit/new/), which is a subreddit where Redditors ask questions.
-3. The JSON response object is stored in [Amazon S3](https://aws.amazon.com/es/s3/)
-4. Once new data is loaded to the bucket, an event is generated that triggers a Lambda function.
-5. Lambda function starts an EC2 instance.
-6. When the instance launches, a shell script in [User Data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html) automatically runs the production pipeline, which transforms and predicts the category of the reddit question, using the already trained model. You can have a look of the model training [here](/model-training/labeled-dataset/model-trained-EC2.ipynb). Besides you can have a look of a sample result with the predictions over unseen data [here](/model/testing/predictions-unseen.csv).
-7. Once the script is finished, a parquet file with the predicted category is send to S3. EC2 automatically stops, as specified in the user data shell script.
-8. Scheduled query triggers the COPY of the file from S3 to the staging table in Redshift. If everything is okay, data is unloaded to the data warehouse schema.
-9. Quicksight dashboard is dynamically updated with the new data.
+1. GitHub connects with [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) that has trust of it thanks to [OIDC](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) and dynamically generates AWS credentials. Job is executed every 8 hours as automated in [GitHub actions](https://github.com/features/actions) and using a [Python script](/EXTRACT/extract_reddit_posts.py) get the latest 1000 messages in [AskReddit](https://www.reddit.com/r/AskReddit/new/)
+2. The JSON response object is stored in [Amazon S3](https://aws.amazon.com/es/s3/) and generates an event notification, that triggers the [lambda function](/AWS/lambda/lambda.py) which starts the dockerized EC2 instance.
+3. When the instance launches, a shell script in [User Data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html) automatically runs the production pipeline, which transforms and predicts the category of the reddit question, using the trained model. You can have a look of the model training [here](/model-training/labeled-dataset/model-trained-EC2.ipynb). Besides you can have a look of a sample result with the predictions over unseen data [here](/model/testing/predictions-unseen.csv).
+4. Once the script is finished, a parquet file with the dataset with the predicted category is send to S3. EC2 automatically stops, as specified in the user data shell script.
+5. Scheduled query triggers the COPY of the file from S3 to the staging table in Redshift. Data is unloaded to the data warehouse schema.
+6. Quicksight dashboard is dynamically updated with the new data.
 
 ## Tools & Technologies
 - Cloud - AWS
@@ -57,4 +54,4 @@ In terms of results, the products has acomplished the main points:
 - Automated pipeline
 - Store and show the results
 
-You should be able to reproduce the project if the [instructions section](/INSTRUCTIONS/) is followed. However, I'm more than happy to help if any trouble. Feel free to contact me.
+You can reproduce the project if the [instructions section](/INSTRUCTIONS/) is followed. However, I'm more than happy to help if any trouble. Feel free to contact me.
