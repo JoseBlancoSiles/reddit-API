@@ -1,3 +1,4 @@
+# Paste this script in hte user data of your EC2
 #cloud-boothook
 #!/bin/bash
 export HOME=/home/ubuntu
