@@ -1,14 +1,14 @@
-# Automated Machine Learning pipeline to categorize Reddit questions
+# Automated AWS Machine Learning pipeline to categorize Reddit posts
 
 ## Architecture
-![Alt text](/images/architecture.JPG)
+![Alt text](/images/architecture.png)
 
 ## Motivation
-This is the technical implementation of my master's thesis in Data Science & Engineering. I really wanted to find a combination between Data Engineering, DevOps and Data Science, just like a real life data job project, so I though that Reddit data could be a good starting point. 
+This is the technical implementation of my master's thesis in Data Science & Engineering. I really wanted to find a combination between Data Engineering, DevOps and Data Science, just like a real life data job project, so I though that Reddit data could be a good starting point. Besides, I always had te curiosity to know what were the kind of questions that pople ask in Reddit.
 
 ## Overview
 
-The purpose of this automated ML pipeline is to classify into buckets the questions that users of Reddit ask in /r/AskReddit.
+The purpose of this automated ML pipeline is to classify into buckets  the questions that users of Reddit ask in [AskReddit](https://www.reddit.com/r/AskReddit/new/). Besides, 
 
 ### Workflow
 
@@ -35,18 +35,17 @@ The purpose of this automated ML pipeline is to classify into buckets the questi
 - OS: Ubuntu
 
 ## Requisites
-- AWS account (free tier might be not be enough to train the model)
+- AWS account
 - Reddit developer account
 - GitHub account
 
 ## Sample output
 ![Alt text](/images/reddit-dashboard.JPG)
 
-
 ## Improvement
 No project is perfect, neither is mine. There is still a lot of room to improvement in this project, but eventually you need to reduce the scope of it. How can I make this better?
 
-1. Docker and Terraform - It makes easier to deploy and share infraestructure as code. Besides, it automates the boring stuff of element creation in AWS.
+1. Terraform - It makes easier to deploy and share infraestructure as code. Besides, it automates the boring stuff of element creation in AWS.
 2. More data in Redshift - Was limited due to AWS free tier.
 3. Cluster EMR for Spark - Same reason as above.
 
@@ -58,3 +57,4 @@ In terms of results, the products has acomplished the main points:
 - Automated pipeline
 - Store and show the results
 
+You should be able to reproduce the project if the [instructions section](/INSTRUCTIONS/) is followed. However, I'm more than happy to help if any trouble. Feel free to contact me.
