@@ -1,35 +1,73 @@
-# Automated AWS Machine Learning pipeline to categorize Reddit posts
+# Batch-Processing Data Pipeline for Reddit Post Categorization in AWS
 
 ## Architecture
 ![Alt text](/images/architecture.png)
 
 ## Motivation
-This is the technical implementation of my master's thesis in Data Science & Engineering. I really wanted to find a combination between Data Engineering, DevOps and Data Science, just like a real life data job project, so I though that Reddit data could be a good starting point. Besides, I always had te curiosity to know what were the kind of questions that pople ask in Reddit.
+The motivation behind this project stems from my desire to create a real-world data job scenario that seamlessly combines the realms of Data Engineering, DevOps, Data Science and Business Intelligence. Reddit, with its diverse range of questions and discussions, offers an intriguing starting point for exploration.
 
 ## Overview
+The purpose of this automated ML pipeline is to classify into buckets the questions that users of Reddit ask in [AskReddit](https://www.reddit.com/r/AskReddit/new/). The buckets established have been the following ones:
 
-The purpose of this automated ML pipeline is to classify into buckets  the questions that users of Reddit ask in [AskReddit](https://www.reddit.com/r/AskReddit/new/). Besides, 
+```python
+["money", "food", "job", "life", "music", "media", "movie", "sexual", "health", "kid", "game", "book", "tech", "relationships"]
+```
 
 ### Workflow
 
-1. GitHub connects with [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) that has trust of it thanks to [OIDC](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) and dynamically generates AWS credentials. Job is executed every 8 hours as automated in [GitHub actions](https://github.com/features/actions) and using a [Python script](/EXTRACT/extract_reddit_posts.py) get the latest 1000 messages in [AskReddit](https://www.reddit.com/r/AskReddit/new/)
-2. The JSON response object is stored in [Amazon S3](https://aws.amazon.com/es/s3/) and generates an event notification, that triggers the [lambda function](/AWS/lambda/lambda.py) which starts the dockerized EC2 instance.
-3. When the instance launches, a shell script in [User Data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html) automatically runs the production pipeline, which transforms and predicts the category of the reddit question, using the trained model. You can have a look of the model training [here](/model-training/labeled-dataset/model-trained-EC2.ipynb). Besides you can have a look of a sample result with the predictions over unseen data [here](/model/testing/predictions-unseen.csv).
-4. Once the script is finished, a parquet file with the dataset with the predicted category is send to S3. EC2 automatically stops, as specified in the user data shell script.
-5. Scheduled query triggers the COPY of the file from S3 to the staging table in Redshift. Data is unloaded to the data warehouse schema.
-6. Quicksight dashboard is dynamically updated with the new data.
+1. **GitHub Integration and Data Extraction**:
+   - GitHub connects with an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) that establishes trust using [OIDC](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services).
+   - An automated job in [GitHub Actions](https://github.com/features/actions), executed every 8 hours, employs a [Python script](/EXTRACT/extract_reddit_posts.py) to retrieve the latest 1000 messages from [AskReddit](https://www.reddit.com/r/AskReddit/new/).
+
+2. **Data Storage and Event Trigger**:
+   - The resulting JSON response is stored in [Amazon S3](https://aws.amazon.com/es/s3/) and triggers an event notification.
+   - This notification, in turn, triggers a [lambda function](/AWS/lambda/lambda.py) that initiates a Dockerized EC2 instance.
+
+3. **Automated Data Processing**:
+   - Upon instance launch, a shell script in [User Data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html) automatically initiates the production pipeline.
+   - This pipeline performs data transformation and employs a trained model to predict the category of Reddit questions. The model training process can be explored [here](/model-training/labeled-dataset/model-trained-EC2.ipynb), and sample prediction results can be found [here](/model/testing/predictions-unseen.csv).
+
+4. **Data Storage and Shutdown**:
+   - After script completion, a Parquet file containing the dataset with predicted categories is sent to S3.
+   - The EC2 instance is automatically stopped according to the user data shell script.
+
+5. **Data Warehousing**:
+   - A scheduled query triggers the copying of the file from S3 to the staging table in Redshift.
+   - Data is subsequently unloaded into the data warehouse schema.
+
+6. **Data Visualization**:
+   - The Quicksight dashboard dynamically updates with the new data.
 
 ## Tools & Technologies
-- Cloud - AWS
-- Data Lake - S3
-- Data Warehouse - Redshift
-- Language - Python, SQL, Shell
-- Framework - Apache Spark
-- Files: JSON, Parquet
-- Data Visualization - Quicksight
-- Automation - GitHub actions, Lambda, Events, Query Scheduler
-- Machines: t2.2xlarge, GitHub machine
-- OS: Ubuntu
+
+- **Cloud Platform**: AWS (Amazon Web Services) - The cloud infrastructure used for hosting and running various components of the project.
+  
+- **Data Lake**: Amazon S3 - Serves as the data lake for storing JSON and Parquet files, facilitating scalable and efficient data storage.
+
+- **Data Warehouse**: Amazon Redshift - Provides a powerful data warehousing solution for structured data storage and analysis.
+
+- **Programming Languages**:
+  - Python - Used for scripting and data manipulation.
+  - SQL - Utilized for querying and managing data within the data warehouse.
+  - Shell - Employed for automation and scripting tasks.
+
+- **Framework**: Apache Spark - Enables distributed data processing for large-scale data transformations and analytics.
+
+- **File Formats**: JSON, Parquet - Data is stored and processed in these formats, allowing for flexibility and efficiency in data handling.
+
+- **Data Visualization**: Amazon Quicksight - Used for creating dynamic and interactive data visualizations to gain insights from the processed data.
+
+- **Automation Tools**:
+  - GitHub Actions - Automates various tasks, such as data extraction and processing, at scheduled intervals.
+  - AWS Lambda - Executes functions in response to events, including triggering EC2 instances.
+  - Event Notifications - Used for triggering processes based on events in S3.
+  - Query Scheduler - Automates scheduled queries for data movement and transformation.
+
+- **Machine Types**:
+  - t2.2xlarge - An EC2 instance type used for processing tasks.
+  - GitHub Machine - Dedicated machine for GitHub Actions and automation.
+
+- **Operating System**: Ubuntu - The Linux distribution used for hosting and running project components.
 
 ## Requisites
 - AWS account
@@ -39,19 +77,23 @@ The purpose of this automated ML pipeline is to classify into buckets  the quest
 ## Sample output
 ![Alt text](/images/reddit-dashboard.JPG)
 
-## Improvement
-No project is perfect, neither is mine. There is still a lot of room to improvement in this project, but eventually you need to reduce the scope of it. How can I make this better?
+## Potential Improvements
 
-1. Terraform - It makes easier to deploy and share infraestructure as code. Besides, it automates the boring stuff of element creation in AWS.
-2. More data in Redshift - Was limited due to AWS free tier.
-3. Cluster EMR for Spark - Same reason as above.
+While every project has room for enhancement, it's important to balance scope with available resources. Here are some potential areas for improvement in this project:
+
+1. **Terraform Integration**: Consider implementing Terraform to manage your AWS infrastructure as code. This approach streamlines the deployment process, enhances reproducibility, and simplifies infrastructure sharing among team members. Terraform also automates the provisioning of AWS resources, reducing manual setup efforts.
+
+2. **Increase Data Volume in Redshift**: Expanding the amount of data stored and processed in Amazon Redshift can lead to more comprehensive insights. If you were limited by the AWS free tier, consider optimizing your AWS cost management strategy to accommodate a larger dataset in Redshift. This could result in more robust data analysis and modeling.
+
+3. **Clustered EMR for Spark**: To handle larger-scale data processing and analytics, you might transition to Amazon EMR (Elastic MapReduce) with a clustered configuration. EMR provides the scalability needed for processing big data efficiently. Migrating to EMR would allow you to analyze larger datasets with Apache Spark, potentially uncovering deeper insights and improving prediction accuracy.
 
 ## Conclusion
-Developing this project was challenging but fullfilling. Reinforce and learn new techonologies, deploying a model to production and automating the whole pipeline was super enjoyable!
 
-In terms of results, the products has acomplished the main points:
-- Categorize reddit posts
-- Automated pipeline
-- Store and show the results
+The development of this project proved to be both challenging and immensely fulfilling. It offered opportunities to reinforce existing skills and acquire new ones while achieving the goal of deploying a machine learning model into production and automating the entire pipeline. The journey was truly enjoyable.
 
-You can reproduce the project if the [instructions section](/INSTRUCTIONS/) is followed. However, I'm more than happy to help if any trouble. Feel free to contact me.
+In terms of results, the project successfully accomplished its primary objectives:
+- Categorizing Reddit posts.
+- Implementing a fully automated pipeline.
+- Efficiently storing and presenting the results.
+
+Should you wish to replicate this project, comprehensive instructions can be found in the [instructions section](/INSTRUCTIONS/). However, I'm more than happy to provide assistance should you encounter any difficulties. Please don't hesitate to reach out.
