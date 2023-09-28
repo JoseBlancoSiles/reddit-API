@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-09-28T20:09:33.861Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="ywG1il-tFVoz38IwZ72c" version="21.8.2" type="github">
+<mxfile host="app.diagrams.net" modified="2023-09-28T20:30:59.447Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="Qqut_-47Mo5o6eD_9ONs" version="21.8.2" type="github">
   <diagram name="Page-1" id="0Yt1GP8kwS4d36QMMtIl">
-    <mxGraphModel dx="1050" dy="572" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#000000" math="0" shadow="0">
+    <mxGraphModel dx="724" dy="394" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#000000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -135,10 +135,10 @@
         <mxCell id="Tbskf3uo_zExrf5r-nfX-76" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Consume Reddit API via script&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=#000000;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#F7F7F7;" parent="1" vertex="1">
           <mxGeometry x="51" y="73.21" width="67" height="24.49" as="geometry" />
         </mxCell>
-        <mxCell id="Tbskf3uo_zExrf5r-nfX-79" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;EC2 Instance&lt;br&gt;1. Transform data&lt;br&gt;3. Apply NLP Model&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=#000000;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#F7F7F7;" parent="1" vertex="1">
+        <mxCell id="Tbskf3uo_zExrf5r-nfX-79" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;EC2 Instance&lt;br&gt;1. Transform data&lt;br&gt;2. Apply NLP Model&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=#000000;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#F7F7F7;" parent="1" vertex="1">
           <mxGeometry x="261" y="186.99999999999997" width="88" height="24.49" as="geometry" />
         </mxCell>
-        <mxCell id="Tbskf3uo_zExrf5r-nfX-80" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;1. Copy to Staging table&lt;br&gt;2. Unload to DWH&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=#000000;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#F7F7F7;" parent="1" vertex="1">
+        <mxCell id="Tbskf3uo_zExrf5r-nfX-80" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;1. COPY to staging table&lt;br&gt;2. Unload to DWH&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=#000000;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#F7F7F7;" parent="1" vertex="1">
           <mxGeometry x="430.49" y="226.2" width="111" height="24.49" as="geometry" />
         </mxCell>
         <mxCell id="Tbskf3uo_zExrf5r-nfX-82" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Quicksight&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=#000000;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#F7F7F7;" parent="1" vertex="1">
