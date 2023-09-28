@@ -1,9 +1,11 @@
-# Labeling a raw dataset
-Labeling a dataset from scratch can be challenging and time consuming.
-Firstly, there is no idea of what kind of questions do Redditors ask on the web. Thankfully, the existence of really powerful clustering algortithms such as [BERTOPIC](https://spacy.io/universe/project/bertopic) make the things much easier for us.
+## Labeling a Raw Dataset
 
-### BERTopic --> Initial clustering idea
-BERTopic has been used in this [notebook](category-clustering-BERTopic.ipynb) trained with this [dataset](raw-dataset-reddit.csv) which contains unlabeled Reddit posts in the subreddit r/AskReddit from various days. The BERTopic produced the followin clusters of messages:
+Labeling a dataset from scratch can be a challenging and time-consuming task, especially when dealing with a platform like Reddit where the nature of questions can be highly diverse and unpredictable. Fortunately, advanced clustering algorithms, such as [BERTopic](https://spacy.io/universe/project/bertopic), can greatly simplify this process.
+
+### BERTopic - The Initial Clustering Approach
+
+In this project, we utilized BERTopic, a powerful clustering algorithm, as demonstrated in [this notebook](category-clustering-BERTopic.ipynb). We trained BERTopic using an unlabeled dataset of Reddit posts sourced from the subreddit r/AskReddit on various days. The results of BERTopic clustering led to the creation of the following message clusters:
+
 ```json
 {
    0: 'life',
@@ -47,45 +49,54 @@ BERTopic has been used in this [notebook](category-clustering-BERTopic.ipynb) tr
    38: 'society'
 }
 ```
-### Adding human criteria to the BERT clusters
-The scope of this one has been reduced. However, BERT did a really good job defining some categories, drawing the first line for ours. Based on the clusters made by BERT and human eye experience, the following 14 categories represent more than 50% of the Redditor's questions:
+### Adding Human Criteria to BERT Clusters
+We've refined the scope of this phase, but BERT has played a pivotal role in defining our initial categories. Using both BERT's clustering results and human expertise, we've identified 14 categories that collectively account for more than 50% of Redditors' questions:
+
 ```python
 TARGET_CLASSES = ["money", "food", "job", "life", "music", "media", "movie", "sexual", "health", "kid", "game", "book", "tech", "relationships"]
 ```
-### Labeling a dataset
-The last step is to collect a new sample of messages and label them, based on the above categories. There would be, aproximately, a 50% of messages that would not really fill in any bucket, and those messages will be discarded. In the [production model](../production-model/production-MLR.ipynb) the Reddit messages that doesn't fit in any of the buckets (if doesn't get to the threshold) --> they are labeled as "other". So, actually, in the Data Warehouse we will find up to 15 categories of posts. 
-It's important that the labeled dataset is balanced. Having a balanced dataset in multiclass classification is essential for building fair, accurate, and generalizable models. It ensures that the model learns from all classes equally, leading to better overall performance and preventing potential biases or discrimination in predictions.
+
+### Labeling the Dataset
+
+The final step involves collecting a new sample of messages and labeling them based on the aforementioned categories. Approximately 50% of the messages may not neatly fit into any category and will be discarded. In the [production model](/AWS/EC2/production-pipeline.py), Reddit messages that don't fit into any of the categories (if they don't meet the threshold) are labeled as "other." Consequently, the Data Warehouse will contain up to 15 categories of posts.
+
+It's crucial to emphasize the importance of a balanced dataset. In multiclass classification, a balanced dataset is indispensable for building fair, accurate, and generalizable models. It ensures equal learning from all classes, leading to improved overall performance and mitigating potential biases or discrimination in predictions.
+
+Your explanation of the model training and its results is clear and informative. However, you can make a few minor adjustments for readability and clarity:
 
 ```python
 print(df.groupby("topic_name").count())
 ```
-topic_name
-book             113
-food             139
-game             127
-health           145
-job              142
-kid              143
-life             112
-media            122
-money            155
-movie            141
-music            118
-relationships    140
-sexual           152
-tech             116
 
-[Here](/model-training/labeled-dataset/labeled-training-dataset.csv) you can have a look to the dataset used to train the model. Feel free to use it for your case!
+## Dataset Distribution
 
-## Training the ML model
+The dataset's distribution across various topics is as follows:
 
-For this project, different ML models have been tested like Random forest, naive-bayes, linear SVC... The training and test of all the models is outside of the scope of this repository, therefore only the one that performed the best, which resulted to be the Multiclass Logistic Regression, is included. However, feel free to reach out to me if ever want to know more about the other models, I'll keep them in the gitignore.
+- book: 113
+- food: 139
+- game: 127
+- health: 145
+- job: 142
+- kid: 143
+- life: 112
+- media: 122
+- money: 155
+- movie: 141
+- music: 118
+- relationships: 140
+- sexual: 152
+- tech: 116
 
-### Results of the model
-The results of the model were about a 65% accuracy, which can be low in some scenarios, but in this one is actually quite good. Here is why. As I decided to assign only one category per post, sometimes, the nature of the question is ambiguos, i.e.:
+You can explore the dataset used for model training in detail [here](/AWS/EC2/NLP-model/training/labeled-training-dataset.csv). Feel free to use it for your own purposes!
 
-"Do you need to eat fruit to be healthy"?
+## Model Training
 
-That question is clearly falling into 2 buckets: health, food.
+In this project, various machine learning models were tested, including Random Forest, Naive Bayes, and Linear SVC. However, for brevity, we've included only the best-performing model, which turned out to be Multiclass Logistic Regression. If you're interested in learning more about the other models tested, feel free to reach out to me, although I've excluded them from this repository.
 
-So we can be sure that the model will predict with more than 65% the category of the incoming posts. 
+## Model Results
+
+The Multiclass Logistic Regression model achieved an accuracy of approximately 65%, which is considered quite good in this context. It's important to note that since we assigned only one category per post, the model's performance may appear lower than expected in scenarios where questions could belong to multiple categories. For instance:
+
+**Question**: "Do you need to eat fruit to be healthy?"
+
+This question can reasonably fall into two categories: health and food. Therefore, the model's accuracy, which is above 65%, suggests a strong predictive capability, considering the inherent ambiguity in some questions.
