@@ -1,5 +1,6 @@
 # Using AWS Lambda to automate the process and reduce cost
 ![Alt text](/images/lambda-trigger.png)
+
 In order to automate and save costs, it would be perfect that, just when the new batch of reddit messages hit the S3, we process them. That is the point of this step!
 The best about that is that we can have the EC2 instance stoppped and only run when triggered by Lambda!
 
@@ -55,9 +56,16 @@ Rmember to replace the code with your instance id!
 1. Go to your S3 bucket
 2. Properties --> Create event notification
 3. There are multiple ways to configure, for this scenario, I chose to add Suffix, in order to reduce the number of checks of the Lambda function. Besides, select "All object create events":
+
+
 ![Alt text](/images/s3-event.png)
+
+
 4. Add the lambda function recently deployed as destination:
+   
 ![Alt text](/images/destination-lambda.png)
+
+
 5. Save changes
 
 We are good to go! Whenever the S3 bucket gets new reddit posts, it will trigger the lambda function, that will start the EC2 instance!
