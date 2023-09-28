@@ -49,4 +49,4 @@ venv.bak/
 
 EDA/titles.csv
 connect-ec2.txt
-./AWS/EC2/NLP-model/sparkML-multiclass-classification-models
+AWS/EC2/NLP-model/sparkML-multiclass-classification-models/
