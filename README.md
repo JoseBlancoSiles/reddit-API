@@ -12,7 +12,7 @@ The purpose of this automated ML pipeline is to classify into categories the que
 ```python
 ["money", "food", "job", "life", "music", "media", "movie", "sexual", "health", "kid", "game", "book", "tech", "relationships"]
 ```
-To kow more about why these categories, refer to [steps to label the dataset](/AWS/EC2/NLP-model/training/steps.md)
+To know more about why these categories, refer to [steps to label the dataset](/AWS/EC2/NLP-model/training/steps.md)
 ### Workflow
 
 1. **GitHub Integration and Data Extraction**:
