@@ -7,12 +7,12 @@
 The motivation behind this project stems from my desire to create a real-world data job scenario that seamlessly combines the realms of Data Engineering, DevOps, Data Science and Business Intelligence. Reddit, with its diverse range of questions and discussions, offers an intriguing starting point for exploration.
 
 ## Overview
-The purpose of this automated ML pipeline is to classify into buckets the questions that users of Reddit ask in [AskReddit](https://www.reddit.com/r/AskReddit/new/). The buckets established have been the following ones:
+The purpose of this automated ML pipeline is to classify into categories the questions that users of Reddit ask in [AskReddit](https://www.reddit.com/r/AskReddit/new/). The categories established have been the following ones:
 
 ```python
 ["money", "food", "job", "life", "music", "media", "movie", "sexual", "health", "kid", "game", "book", "tech", "relationships"]
 ```
-
+To kow more about why these categories, refer to [steps to label the dataset](/AWS/EC2/NLP-model/training/steps.md)
 ### Workflow
 
 1. **GitHub Integration and Data Extraction**:
