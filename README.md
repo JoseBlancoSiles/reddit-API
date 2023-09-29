@@ -20,16 +20,16 @@ The purpose of this automated ML pipeline is to classify into buckets the questi
    - An automated job in [GitHub Actions](https://github.com/features/actions), executed every 8 hours, employs a [Python script](/EXTRACT/extract_reddit_posts.py) to retrieve the latest 1000 messages from [AskReddit](https://www.reddit.com/r/AskReddit/new/).
 
 2. **Data Storage and Event Trigger**:
-   - The resulting JSON response is stored in [Amazon S3](https://aws.amazon.com/es/s3/) and triggers an event notification.
+   - The resulting JSON response is stored in raw format in the data lake [Amazon S3](https://aws.amazon.com/es/s3/)and triggers an event notification.
    - This notification, in turn, triggers a [lambda function](/AWS/lambda/lambda.py) that initiates a Dockerized EC2 instance.
 
 3. **Automated Data Processing**:
    - Upon instance launch, a shell script in [User Data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html) automatically initiates the production pipeline.
-   - This pipeline performs data transformation and employs a trained model to predict the category of Reddit questions. The model training process can be explored [here](/model-training/labeled-dataset/model-trained-EC2.ipynb), and sample prediction results can be found [here](/model/testing/predictions-unseen.csv).
+   - This pipeline performs data transformation and employs a trained model to predict the category of Reddit questions. The model training process can be explored [here](/AWS/EC2/NLP-model/training/model-trained-EC2.ipynb), and sample prediction results can be found [here](/AWS/EC2/NLP-model/testing/predictions-unseen.csv).
 
 4. **Data Storage and Shutdown**:
    - After script completion, a Parquet file containing the dataset with predicted categories is sent to S3.
-   - The EC2 instance is automatically stopped according to the user data shell script.
+   - The EC2 instance is automatically stopped according to the [user data shell script](/AWS/EC2/user-data.sh).
 
 5. **Data Warehousing**:
    - A scheduled query triggers the copying of the file from S3 to the staging table in Redshift.
