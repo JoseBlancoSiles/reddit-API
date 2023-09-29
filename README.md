@@ -87,6 +87,12 @@ While every project has room for enhancement, it's important to balance scope wi
 
 3. **Clustered EMR for Spark**: To handle larger-scale data processing and analytics, you might transition to Amazon EMR (Elastic MapReduce) with a clustered configuration. EMR provides the scalability needed for processing big data efficiently. Migrating to EMR would allow you to analyze larger datasets with Apache Spark, potentially uncovering deeper insights and improving prediction accuracy.
 
+4. **MLOps**: To automate, monitor and retrain the ML model, as it can lower the effiency over time.
+
+## How to run the project
+
+Should you wish to replicate this project, comprehensive instructions can be found in the [instructions section](/INSTRUCTIONS/). Please follow step by step, from 1 to 4. Besides, I'm more than happy to provide assistance should you encounter any difficulties. Please don't hesitate to reach out.
+
 ## Conclusion
 
 The development of this project proved to be both challenging and immensely fulfilling. It offered opportunities to reinforce existing skills and acquire new ones while achieving the goal of deploying a machine learning model into production and automating the entire pipeline. The journey was truly enjoyable.
@@ -95,5 +101,3 @@ In terms of results, the project successfully accomplished its primary objective
 - Categorizing Reddit posts.
 - Implementing a fully automated pipeline.
 - Efficiently storing and presenting the results.
-
-Should you wish to replicate this project, comprehensive instructions can be found in the [instructions section](/INSTRUCTIONS/). However, I'm more than happy to provide assistance should you encounter any difficulties. Please don't hesitate to reach out.
