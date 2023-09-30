@@ -1,7 +1,8 @@
 name: run extract_reddit_posts.py
 on:
-  schedule:
-    - cron: '0 6,14,22 * * *' # every 8 hour
+  push:
+  #schedule:
+    #- cron: '0 6,14,22 * * *' # every 8 hour
        
 permissions:
   id-token: write
